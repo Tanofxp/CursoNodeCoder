@@ -20,42 +20,50 @@ export default class ProductManager {
     };
 
     addProduct = async (data) => {
-        const producto = data;
-        console.log("esto", producto);
-        const products = await this.getProduct();
+        try {
+            const product = data;
+            const products = await this.getProduct();
 
-        if (products.length === 0) {
-            producto.id = 1;
-        } else {
-            producto.id = products[products.length - 1].id + 1;
-        }
-        const existe = products.filter((e) => e.code === producto.code);
+            const lastproduct = products[products.length - 1];
+            product.id = lastproduct ? lastproduct.id + 1 : 1;
 
-        if (existe.length !== 0) {
-            return console.error(
-                "Code",
-                producto.code,
-                " ya se encuentra REGISTRADO"
-            );
-        }
-        if (
-            (producto.title,
-            producto.descripcion,
-            producto.price,
-            producto.thumbnail,
-            producto.code,
-            producto.stock)
-        ) {
-            products.push(producto);
+            const existe = products.some((e) => e.code === product.code);
+            if (existe) {
+                throw new Error(
+                    `El código ${product.code} ya se encuentra REGISTRADO`
+                );
+            }
+            if (!product.status) {
+                product.status = true;
+            }
 
-            await fs.promises.writeFile(
-                this.path,
-                JSON.stringify(products, null, "\t")
+            const requiredFields = [
+                "title",
+                "descripcion",
+                "price",
+                "thumbnail",
+                "code",
+                "stock",
+                "status",
+            ];
+            const hasAllFields = requiredFields.every((field) =>
+                product.hasOwnProperty(field)
             );
-        } else {
-            console.error(
-                "Todos los campos son Obligatorios revise los datos para poder continuar"
-            );
+            if (hasAllFields) {
+                products.push(product);
+                await fs.promises.writeFile(
+                    this.path,
+                    JSON.stringify(products, null, "\t")
+                );
+                return products;
+            } else {
+                throw new Error(
+                    "Todos los campos son obligatorios. Revise los datos para poder continuar"
+                );
+            }
+        } catch (error) {
+            console.error("Error al agregar el auto:", error.message);
+            throw error;
         }
     };
 
@@ -85,6 +93,36 @@ export default class ProductManager {
             this.path,
             JSON.stringify(jsonData, null, "\t")
         );
-        return console.log(`Se cambio ${product} con exito!`);
+        console.log(`Se modificó el producto con id ${id}`);
+        return jsonData.find((e) => e.id === id);
+    };
+
+    async deleteProduct(id) {
+        const data = await this.getProduct();
+        const index = data.findIndex((product) => product.id === id);
+
+        if (index !== -1) {
+            data.splice(index, 1);
+            try {
+                await fs.promises.writeFile(
+                    this.path,
+                    JSON.stringify(data, null, "\t")
+                );
+            } catch (error) {
+                throw new Error("Error while saving product");
+            }
+        } else {
+            throw new Error("Product not found");
+        }
+    }
+
+    getProductsInStock = async () => {
+        const products = await this.getProduct();
+
+        const inStock = [];
+
+        inStock.push(...products.filter((product) => product.stock > 0));
+
+        return inStock;
     };
 }

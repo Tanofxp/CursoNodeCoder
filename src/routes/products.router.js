@@ -1,8 +1,7 @@
 import { Router } from "express";
-import ProductManager from "../class/ProductManager.js";
+import socketServer, { ProductsManager } from "../App.js";
 
 const router = Router();
-const ProductsManager = new ProductManager();
 
 router.get("/", async (req, res) => {
     console.log(req.query.limit);
@@ -22,7 +21,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
     console.log(req.body);
     const product = await ProductsManager.addProduct(req.body);
-
+    socketServer.emit("newProduct", newProduct);
     res.send(product);
 });
 router.put("/:id", async (req, res) => {
@@ -31,7 +30,15 @@ router.put("/:id", async (req, res) => {
         parseInt(req.params.id),
         req.body
     );
+    socketServer.emit("updateProduct", product);
+    res.send(product);
+});
 
+router.delete("/:id", async (req, res) => {
+    const product = await ProductsManager.deleteProduct(
+        parseInt(req.params.id)
+    );
+    socketServer.emit("deleteProduct", id);
     res.send(product);
 });
 

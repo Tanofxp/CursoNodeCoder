@@ -1,7 +1,7 @@
 [
 	{
 		"title": "Eternos - La Nación",
-		"descripcion": "Una edición especial para atesorar y revivir uno de los hitos más importantes de la historia del deporte argentino. Una pieza de colección para resumir en textos e imágenes el éxito deportivo que más movilizó a los argentinos. Cuenta con contenidos de los héroes de Qatar, Messi como leyenda absoluta, Scaloni y su cuerpo técnico, los festejos ¡y mucho más! Una recopilación sobre el Mundial de Qatar 2022 que nunca olvidaremos. Ese en el que todos los argentinos fuimos felices.",
+		"descripcion": "Una edición especial para atesorar y revivir uno de los hitos más importantes de la historia del deporte argentino.",
 		"price": 200,
 		"thumbnail": "https://catalogos.libooks.com/9789878487588_md.webp",
 		"code": 1,
@@ -9,8 +9,8 @@
 		"id": 1
 	},
 	{
-		"title": "Harry",
-		"descripcion": "Libro de magia",
+		"title": "Harry potter y la piedra filosofal",
+		"descripcion": "Harry Potter se ha quedado huérfano y vive en casa de sus abominables tíos y del insoportable primo Dudley. Se siente muy triste y solo, hasta que un buen día recibe una carta que cambiará su vida para siempre. ",
 		"price": 200,
 		"thumbnail": "https://www.lanormallibros.com.ar/media/libros/bd4be862594dc7fdb53166047e87f2af.jpg",
 		"code": 2,
@@ -95,6 +95,8 @@
 		"price": "300",
 		"code": "11",
 		"stock": "50",
-		"id": 11
+		"thumbnail": "https://catalogos.libooks.com/9789878151335_md.webp",
+		"id": 11,
+		"status": true
 	}
 ]
