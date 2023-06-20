@@ -13,7 +13,7 @@ function createChild(product) {
 
     // Actualizar el HTML de la página
     const newElement = document.createElement("tr");
-    newElement.id = product.id;
+    newElement.id = product._id;
 
     newElement.innerHTML = html;
     table.appendChild(newElement);
@@ -53,7 +53,7 @@ socket.on("initProduct", (products) => {
 });
 
 socket.on("updateProduct", (product) => {
-    deleteChild(product.id);
+    deleteChild(product._id);
     createChild(product);
 });
 

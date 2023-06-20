@@ -28,7 +28,10 @@ router.put("/:id", async (req, res) => {
         req.params.id,
         req.body
     );
-    socketServer.emit("updateProduct", product);
+    if (product.matchedCount > 0) {
+        const newProduct = await ProductsManager.getProductById(req.params.id);
+        socketServer.emit("updateProduct", newProduct);
+    }
     res.send(product);
 });
 

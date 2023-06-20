@@ -19,12 +19,13 @@ router.post("/", async (req, res) => {
     res.send({ status: "success" });
 });
 
-router.post("/:cid/products/:pid", async (req, res) => {
-    console.log(req.params.cid, req.params.pid);
+router.post("/:cid/products/:pid/quantity/:q", async (req, res) => {
+    console.log(req.params.cid, req.params.pid, req.params.q);
     const cartId = req.params.cid;
     const productId = req.params.pid;
+    const quantity = req.params.q;
 
-    await managerCarts.addToCart(cartId, productId);
+    await managerCarts.addToCart(cartId, productId, quantity);
     res.send({ status: "success" });
 });
 

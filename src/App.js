@@ -6,6 +6,7 @@ import routerCart from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import routerProduct from "./routes/products.router.js";
 import ProductManager from "./DAOs/ProductManagerMongo.class.js";
+import { messagesModel } from "./DAOs/models/messages.model.js";
 
 const app = express();
 
@@ -28,8 +29,11 @@ const expressServer = app.listen(8080, () =>
 );
 
 const socketServer = new Server(expressServer);
+
 const products = await ProductsManager.getProductsInStock();
+
 const mensajes = [];
+
 socketServer.on("connection", (socket) => {
     socketServer.emit("initProduct", products);
     socket.on("message", (data) => {
@@ -37,9 +41,10 @@ socketServer.on("connection", (socket) => {
     });
 
     socket.on("message", (data) => {
-        console.log(data);
+        console.log("esto son los mensajes", data);
         mensajes.push(data);
         socketServer.emit("imprimir", mensajes);
+        messagesModel.create(data);
     });
 
     socket.on("authenticatedUser", (data) => {

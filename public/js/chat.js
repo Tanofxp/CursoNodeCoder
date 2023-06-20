@@ -27,7 +27,7 @@ chatbox.addEventListener("keyup", (evt) => {
 socket.on("imprimir", (data) => {
     let mensajes = "";
     data.forEach((msj) => {
-        mensajes += `${msj.user} escribio: ${msj.message} <br/>`;
+        mensajes += `${msj.user}:${msj.message}<br/>`;
     });
     messageLogs.innerHTML = mensajes;
 });
@@ -36,7 +36,7 @@ socket.on("newUserAlert", (data) => {
     if (!user) return;
     Swal.fire({
         toast: true,
-        position: "top-end",
+        position: "center",
         showConfirmButton: false,
         timer: 5000,
         title: data + " se ha unido al chat",
