@@ -2,7 +2,7 @@ import fs from "fs";
 
 export default class ProductManager {
     constructor() {
-        this.path = "src/class/files/Productos.json";
+        this.path = "src/DAOs/class/files/Productos.json";
     }
 
     getProduct = async (limit) => {

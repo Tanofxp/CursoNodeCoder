@@ -5,7 +5,7 @@ import { engine } from "express-handlebars";
 import routerCart from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import routerProduct from "./routes/products.router.js";
-import ProductManager from "./class/ProductManager.js";
+import ProductManager from "./DAOs/ProductManagerMongo.class.js";
 
 const app = express();
 
@@ -29,10 +29,21 @@ const expressServer = app.listen(8080, () =>
 
 const socketServer = new Server(expressServer);
 const products = await ProductsManager.getProductsInStock();
+const mensajes = [];
 socketServer.on("connection", (socket) => {
     socketServer.emit("initProduct", products);
     socket.on("message", (data) => {
         console.log(data);
+    });
+
+    socket.on("message", (data) => {
+        console.log(data);
+        mensajes.push(data);
+        socketServer.emit("imprimir", mensajes);
+    });
+
+    socket.on("authenticatedUser", (data) => {
+        socket.broadcast.emit("newUserAlert", data);
     });
 });
 

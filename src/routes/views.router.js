@@ -3,7 +3,10 @@ const router = Router();
 import socketServer, { ProductsManager } from "../App.js";
 
 router.get("/", async (req, res) => {
-    await ProductsManager.getProductsInStock().then((products) => {
+    await ProductsManager.getProductsInStock().then((product) => {
+        let products = JSON.stringify(product);
+        products = JSON.parse(products);
+        console.log(products);
         res.render("home", {
             title: "Productos",
             products,
@@ -17,6 +20,10 @@ router.get("/realtimeproducts", async (req, res) => {
             title: "Productos",
         });
     });
+});
+
+router.get("/chat", (req, res) => {
+    res.render("chat");
 });
 
 export default router;

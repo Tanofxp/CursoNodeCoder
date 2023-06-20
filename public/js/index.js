@@ -9,7 +9,7 @@ function createChild(product) {
                 <td>$${product.price}</td>
                 <td><img style="width:50px;height:80px;" src="${product.thumbnail}"></img></td>
                 <td>${product.stock} unidades</td>
-              `;
+            `;
 
     // Actualizar el HTML de la página
     const newElement = document.createElement("tr");
