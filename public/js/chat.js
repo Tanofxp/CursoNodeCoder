@@ -3,6 +3,7 @@ let user;
 
 const chatbox = document.getElementById("chatbox");
 const messageLogs = document.getElementById("messageLogs");
+const button = document.getElementById("enviar");
 
 Swal.fire({
     title: "Identificate",
@@ -19,15 +20,23 @@ Swal.fire({
 
 chatbox.addEventListener("keyup", (evt) => {
     if (evt.key === "Enter") {
-        socket.emit("message", { user: user, message: chatbox.value });
-        chatbox.value == "";
+        enviar();
     }
 });
+
+button.onclick = () => {
+    enviar();
+};
+
+function enviar() {
+    socket.emit("message", { user: user, message: chatbox.value });
+    chatbox.value = "";
+}
 
 socket.on("imprimir", (data) => {
     let mensajes = "";
     data.forEach((msj) => {
-        mensajes += `${msj.user}:${msj.message}<br/>`;
+        mensajes += `${msj.user}:  ${msj.message}<br/>`;
     });
     messageLogs.innerHTML = mensajes;
 });
