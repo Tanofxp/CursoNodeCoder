@@ -7,12 +7,34 @@ export default class ProductManager {
     );
 
     async addProduct(product) {
-        let result = await productsModel.create(product);
-        return result;
+        try {
+            let result = await productsModel.create(product);
+            return result;
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
     }
 
-    async getProduct() {
-        let result = await productsModel.find();
+    async getProduct(
+        limit = 10,
+        page = 1,
+        sort = 0,
+        filtro = null,
+        filtroVal = null
+    ) {
+        let whereOptions = {};
+        console.log(filtro, filtroVal);
+        if (filtro != "" && filtroVal != "") {
+            whereOptions = { [filtro]: filtroVal };
+        }
+        console.log(limit, page, sort);
+        let result = await productsModel.paginate(whereOptions, {
+            limit: limit,
+            page: page,
+            sort: { price: sort },
+        });
+        console.log("esto es el limit", limit);
         return result;
     }
 

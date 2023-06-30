@@ -4,10 +4,24 @@ import socketServer, { ProductsManager } from "../App.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-    console.log(req.query.limit);
-    const product = await ProductsManager.getProduct(req.query.limit);
-    console.log(req.query.limit);
-    res.send(product);
+    let limit = Number(req.query.limit);
+    let page = Number(req.query.page);
+    let sort = Number(req.query.sort);
+    let filtro = req.query.filtro;
+    let filtroVal = req.query.filtroVal;
+    if (!limit) {
+        limit = 12;
+    }
+    console.log(limit, page, sort);
+    const product = await ProductsManager.getProduct(
+        limit,
+        page,
+        sort,
+        filtro,
+        filtroVal
+    );
+    console.log({ product });
+    res.send({ product });
 });
 
 router.get("/:id", async (req, res) => {
