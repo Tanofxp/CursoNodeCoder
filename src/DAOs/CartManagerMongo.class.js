@@ -24,7 +24,9 @@ export default class CartManager {
     }
 
     async getCartById(id) {
-        let result = await cartsModel.findOne({ _id: id });
+        let result = await cartsModel
+            .findOne({ _id: id })
+            .populate("products.product");
         return result;
     }
 
@@ -64,17 +66,13 @@ export default class CartManager {
         return;
     }
     async updateCartProducts(idCart, data) {
-        let list = [];
         await this.deleteAllProductsFromCart(idCart);
         let cart = await this.getCartById(idCart);
-        data.forEach((e) => {
-            cart.push(e);
+        data.data.forEach((e) => {
+            cart.products.push(e);
         });
-        //list.push(data.productos.json());
-        //console.log(list);
-        console.log(typeof a);
-        console.log(data);
-        //await cart.save();
+
+        await cart.save();
 
         return;
     }

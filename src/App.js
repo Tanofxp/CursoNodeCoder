@@ -6,6 +6,7 @@ import routerCart from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
 import routerProduct from "./routes/products.router.js";
 import ProductManager from "./DAOs/ProductManagerMongo.class.js";
+import CartManager from "./DAOs/CartManagerMongo.class.js";
 import { messagesModel } from "./DAOs/models/messages.model.js";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/cart", routerCart);
 app.use("/api/products/", routerProduct);
 
 export const ProductsManager = new ProductManager();
+export const CartsManager = new CartManager();
 
 const expressServer = app.listen(8080, () =>
     console.log("!Servidor arriba en el puerto 8080!")

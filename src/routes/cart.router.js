@@ -54,8 +54,7 @@ router.put("/:cid/products/:pid/quantity/:q", async (req, res) => {
 router.put("/:cid", async (req, res) => {
     let cartId = req.params.cid;
     let data = req.body;
-    console.log(data.producto);
-    //await managerCarts.updateCartProducts(cartId, data);
+    await managerCarts.updateCartProducts(cartId, data);
     res.send({ status: "success" });
 });
 
