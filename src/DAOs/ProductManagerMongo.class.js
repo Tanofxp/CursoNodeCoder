@@ -24,17 +24,20 @@ export default class ProductManager {
         filtroVal = null
     ) {
         let whereOptions = {};
-        console.log(filtro, filtroVal);
-        if (filtro != "" && filtroVal != "") {
-            whereOptions = { [filtro]: filtroVal };
+
+        if (filtro != null && filtroVal != null) {
+            whereOptions = {
+                [filtro]: new RegExp(filtroVal, "i"),
+            };
         }
-        console.log(limit, page, sort);
+
         let result = await productsModel.paginate(whereOptions, {
             limit: limit,
             page: page,
             sort: { price: sort },
+            lean: true,
         });
-        console.log("esto es el limit", limit);
+
         return result;
     }
 

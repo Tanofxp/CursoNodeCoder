@@ -10,9 +10,10 @@ router.get("/", async (req, res) => {
     let filtro = req.query.filtro;
     let filtroVal = req.query.filtroVal;
     if (!limit) {
-        limit = 12;
+        limit = 9;
     }
-    console.log(limit, page, sort);
+    // console.log(limit, page, sort);
+
     const product = await ProductsManager.getProduct(
         limit,
         page,
@@ -20,7 +21,7 @@ router.get("/", async (req, res) => {
         filtro,
         filtroVal
     );
-    console.log({ product });
+
     res.send({ product });
 });
 
