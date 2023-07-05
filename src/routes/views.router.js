@@ -21,7 +21,7 @@ router.get("/logout", (req, res) => {
             if (err) {
                 res.status(400).send("Unable to log out");
             } else {
-                res.send("Logout successful");
+                res.redirect("/");
             }
         });
     } else {
