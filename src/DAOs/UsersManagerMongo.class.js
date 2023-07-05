@@ -6,27 +6,30 @@ export default class UsersManager {
         "mongodb+srv://danifxp:OG7BXskD2H5e0Kk2@cluster0.n9h3lzv.mongodb.net/ecommerce?retryWrites=true&w=majority"
     );
     async getUser(email) {
-        console.log(email);
+        const user = await userModel.findOne({
+            email: email,
+        });
+        return user;
     }
     async authUser(email, password) {
-        console.log(email, password);
         const user = await userModel.findOne({
             email: email,
             password: password,
         });
         console.log(user);
         if (!user) return false;
-        else return true;
+        else return user;
     }
     async createUser(data) {
         const exist = await this.getUser(data.email);
+        console.log(exist);
         if (exist) {
-            return res
-                .status(400)
-                .send({ status: "error", message: "El usuario ya existe" });
+            console.log("ya existe");
+            return false;
+        } else {
+            console.log("no existe");
+            const res = await userModel.create(data);
+            return true, res;
         }
-        console.log(data);
-        await userModel.create(data);
-        res.send({ status: "success", message: "usuario  registrado" });
     }
 }

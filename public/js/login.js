@@ -12,7 +12,7 @@ form.addEventListener("submit", (e) => {
             "Content-Type": "application/json",
         },
     }).then((result) => {
-        console.log("esto es result del js----->", result.status);
+        console.log(result);
         if (result.status === 200) {
             Swal.fire({
                 position: "Center",
@@ -22,9 +22,9 @@ form.addEventListener("submit", (e) => {
                 showConfirmButton: false,
                 timer: 1500,
             });
+            console.log("se loguio loquito");
             window.location.replace("/home");
         } else {
-            console.log("entre");
             Swal.fire({
                 position: "Center",
                 icon: "error",

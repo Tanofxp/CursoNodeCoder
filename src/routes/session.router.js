@@ -6,16 +6,18 @@ const router = Router();
 router.post("/register", async (req, res) => {
     const data = req.body;
     let response = await UsersManagers.createUser(data);
-    console.log("esto --->", response);
-    return response;
+    if (response === false) {
+        return res
+            .status(400)
+            .send({ status: "error", message: "El usuario ya existe" });
+    } else {
+        res.send({ status: "success", message: "usuario  registrado" });
+    }
 });
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    console.log("Esto le llega del post --->", email, password);
-
     const user = await UsersManagers.authUser(email, password);
-    console.log("esto es User --->", user);
     if (user === false)
         return res.status(400).send("Usuario y Contraseña incorrecto");
     req.session.user = {
@@ -24,6 +26,21 @@ router.post("/login", async (req, res) => {
         age: user.age,
     };
     res.send({ status: "success", message: req.session.user });
+});
+
+router.delete("/logout", (req, res) => {
+    console.log("entre al logout");
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(400).send("Unable to log out");
+            } else {
+                res.send("Logout successful");
+            }
+        });
+    } else {
+        res.end();
+    }
 });
 
 export default router;

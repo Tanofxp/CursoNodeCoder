@@ -42,7 +42,6 @@ export default class ProductManager {
     }
 
     async getProductById(id) {
-        console.log("esto llega", id);
         let result = await productsModel.findOne({ _id: id });
         return result;
     }

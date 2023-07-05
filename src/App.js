@@ -5,7 +5,6 @@ import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import routerCart from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
-import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import routerProduct from "./routes/products.router.js";
 import ProductManager from "./DAOs/ProductManagerMongo.class.js";

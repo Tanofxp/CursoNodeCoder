@@ -10,11 +10,12 @@ router.get("/", (req, res) => {
     res.render("login");
 });
 router.get("/profile", (req, res) => {
+    console.log(req.session);
     res.render("profile", {
         user: req.session.user,
     });
 });
-router.delete("/logout", (req, res) => {
+router.get("/logout", (req, res) => {
     if (req.session) {
         req.session.destroy((err) => {
             if (err) {
@@ -24,7 +25,7 @@ router.delete("/logout", (req, res) => {
             }
         });
     } else {
-        res.end();
+        res.redirect("/");
     }
 });
 router.get("/home", async (req, res) => {
@@ -33,7 +34,7 @@ router.get("/home", async (req, res) => {
     let sort = Number(req.query.sort);
     let filtro = req.query.filtro;
     let filtroVal = req.query.filtroVal;
-    console.log(req.query);
+
     if (!limit) {
         limit = 9;
     }
@@ -51,10 +52,10 @@ router.get("/home", async (req, res) => {
                 ? `http://localhost:8080/home/?page=${product.nextPage}`
                 : "";
             product.isValid = !(page <= 0 || page > product.totalPages);
-            console.log(product);
 
             res.render("home", {
                 title: "Productos",
+                user: req.session.user,
                 product,
             });
         }
@@ -77,7 +78,6 @@ router.get("/cart", async (req, res) => {
     await CartsManager.getCartById(cartId).then((product) => {
         let products = JSON.stringify(product.products);
         products = JSON.parse(products);
-        console.log(products);
         res.render("cart", {
             title: "Carrito",
             products,

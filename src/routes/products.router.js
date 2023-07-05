@@ -12,7 +12,6 @@ router.get("/", async (req, res) => {
     if (!limit) {
         limit = 9;
     }
-    // console.log(limit, page, sort);
 
     const product = await ProductsManager.getProduct(
         limit,
@@ -26,19 +25,16 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-    console.log(req.params.id);
     const product = await ProductsManager.getProductById(req.params.id);
     res.send(product);
 });
 
 router.post("/", async (req, res) => {
-    console.log(req.body);
     const product = await ProductsManager.addProduct(req.body);
     socketServer.emit("newProduct", product);
     res.send(product);
 });
 router.put("/:id", async (req, res) => {
-    console.log(req.body);
     const product = await ProductsManager.updateProductById(
         req.params.id,
         req.body
