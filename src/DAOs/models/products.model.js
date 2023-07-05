@@ -17,6 +17,10 @@ const ProductsSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        thumbnail: {
+            type: String,
+            required: true,
+        },
         code: {
             type: Number,
             required: true,
@@ -24,10 +28,6 @@ const ProductsSchema = new mongoose.Schema(
         },
         stock: {
             type: Number,
-            required: true,
-        },
-        thumbnail: {
-            type: String,
             required: true,
         },
     },

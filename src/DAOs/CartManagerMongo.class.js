@@ -27,6 +27,7 @@ export default class CartManager {
         let result = await cartsModel
             .findOne({ _id: id })
             .populate("products.product");
+        console.log(result);
         return result;
     }
 

@@ -1,13 +1,17 @@
 import express from "express";
+import session from "express-session";
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import routerCart from "./routes/cart.router.js";
 import viewsRouter from "./routes/views.router.js";
+import mongoose from "mongoose";
+import MongoStore from "connect-mongo";
 import routerProduct from "./routes/products.router.js";
 import ProductManager from "./DAOs/ProductManagerMongo.class.js";
 import CartManager from "./DAOs/CartManagerMongo.class.js";
 import { messagesModel } from "./DAOs/models/messages.model.js";
+import sessionRouter from "./routes/session.router.js";
 
 const app = express();
 
@@ -19,9 +23,22 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 
+app.use(
+    session({
+        store: new MongoStore({
+            mongoUrl:
+                "mongodb+srv://danifxp:OG7BXskD2H5e0Kk2@cluster0.n9h3lzv.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        }),
+        secret: "mongoSecret",
+        resave: true,
+        saveUninitialized: false,
+    })
+);
+
 app.use("/", viewsRouter);
 app.use("/api/cart", routerCart);
 app.use("/api/products/", routerProduct);
+app.use("/api/sessions", sessionRouter);
 
 export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();

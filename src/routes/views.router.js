@@ -2,7 +2,32 @@ import { Router } from "express";
 const router = Router();
 import socketServer, { ProductsManager, CartsManager } from "../App.js";
 
-router.get("/", async (req, res) => {
+router.get("/register", (req, res) => {
+    res.render("register");
+});
+
+router.get("/", (req, res) => {
+    res.render("login");
+});
+router.get("/profile", (req, res) => {
+    res.render("profile", {
+        user: req.session.user,
+    });
+});
+router.delete("/logout", (req, res) => {
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                res.status(400).send("Unable to log out");
+            } else {
+                res.send("Logout successful");
+            }
+        });
+    } else {
+        res.end();
+    }
+});
+router.get("/home", async (req, res) => {
     let limit = Number(req.query.limit);
     let page = Number(req.query.page);
     let sort = Number(req.query.sort);
@@ -20,10 +45,10 @@ router.get("/", async (req, res) => {
             let products = JSON.stringify(product.docs);
             products = JSON.parse(products);
             product.prevLink = product.hasPrevPage
-                ? `http://localhost:8080/?page=${product.prevPage}`
+                ? `http://localhost:8080/home/?page=${product.prevPage}`
                 : "";
             product.nextLink = product.hasNextPage
-                ? `http://localhost:8080/?page=${product.nextPage}`
+                ? `http://localhost:8080/home/?page=${product.nextPage}`
                 : "";
             product.isValid = !(page <= 0 || page > product.totalPages);
             console.log(product);
@@ -48,10 +73,11 @@ router.get("/chat", (req, res) => {
     res.render("chat");
 });
 router.get("/cart", async (req, res) => {
-    let cartId = "649e1af43c56abc4944c62df";
+    let cartId = "64a5b2ce13eef43be345ac05";
     await CartsManager.getCartById(cartId).then((product) => {
         let products = JSON.stringify(product.products);
         products = JSON.parse(products);
+        console.log(products);
         res.render("cart", {
             title: "Carrito",
             products,
