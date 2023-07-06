@@ -24,10 +24,11 @@ export default class UsersManager {
         const exist = await this.getUser(data.email);
         console.log(exist);
         if (exist) {
-            console.log("ya existe");
             return false;
         } else {
-            console.log("no existe");
+            data.rol = "usuario";
+
+            console.log(data);
             const res = await userModel.create(data);
             return true, res;
         }
