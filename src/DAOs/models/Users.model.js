@@ -14,4 +14,5 @@ const schema = new mongoose.Schema(
     { versionKey: false }
 );
 
-export const userModel = mongoose.model(collection, schema);
+const userModel = mongoose.model(collection, schema);
+export default userModel;

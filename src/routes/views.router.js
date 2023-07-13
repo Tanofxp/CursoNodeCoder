@@ -6,6 +6,10 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
+router.get("/resetPassword", (req, res) => {
+    res.render("resetPassword");
+});
+
 router.get("/", (req, res) => {
     res.render("login");
 });
@@ -16,6 +20,7 @@ router.get("/profile", (req, res) => {
         isAdmin: req.session.user.rol === "admin",
     });
 });
+
 router.get("/logout", (req, res) => {
     if (req.session) {
         req.session.destroy((err) => {
@@ -29,6 +34,7 @@ router.get("/logout", (req, res) => {
         res.redirect("/");
     }
 });
+
 router.get("/home", async (req, res) => {
     let limit = Number(req.query.limit);
     let page = Number(req.query.page);
@@ -74,6 +80,7 @@ router.get("/realtimeproducts", async (req, res) => {
 router.get("/chat", (req, res) => {
     res.render("chat");
 });
+
 router.get("/cart", async (req, res) => {
     let cartId = "64a5b2ce13eef43be345ac05";
     await CartsManager.getCartById(cartId).then((product) => {

@@ -18,7 +18,7 @@ form.addEventListener("submit", (e) => {
                 position: "Center",
                 icon: "success",
                 title: "Bienvanido",
-                text: "Inicio de sesión correco",
+                text: "Inicio de sesión correcto",
                 showConfirmButton: false,
                 timer: 1500,
             });

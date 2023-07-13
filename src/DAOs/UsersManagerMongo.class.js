@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { userModel } from "./models/Users.model.js";
+import userModel from "./models/Users.model.js";
 
 export default class UsersManager {
     connection = mongoose.connect(
@@ -32,5 +32,13 @@ export default class UsersManager {
             const res = await userModel.create(data);
             return true, res;
         }
+    }
+
+    async updatePasswordUser(user, password) {
+        await userModel.updateOne(
+            { _id: user._id },
+            { $set: { password: password } }
+        );
+        return true;
     }
 }

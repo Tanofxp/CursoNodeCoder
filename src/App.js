@@ -11,6 +11,8 @@ import ProductManager from "./DAOs/ProductManagerMongo.class.js";
 import CartManager from "./DAOs/CartManagerMongo.class.js";
 import { messagesModel } from "./DAOs/models/messages.model.js";
 import sessionRouter from "./routes/session.router.js";
+import { intializePassport } from "./config/passport.config.js";
+import passport from "passport";
 
 const app = express();
 
@@ -21,7 +23,7 @@ app.use(express.static("./public/"));
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
-
+intializePassport();
 app.use(
     session({
         store: new MongoStore({
@@ -33,6 +35,8 @@ app.use(
         saveUninitialized: false,
     })
 );
+
+app.use(passport.initialize());
 
 app.use("/", viewsRouter);
 app.use("/api/cart", routerCart);
