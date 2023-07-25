@@ -137,8 +137,9 @@
             </h5>
             <button
               id="{{_id}}"
+              name="{{../user.cart}}"
               type="button"
-              onclick="addToCart(this.id)"
+              onclick="addToCart(this.id, this.name)"
               class="btn btn-primary"
             >
               Agregar
@@ -200,10 +201,11 @@
   </div>
 </div>
 <script>
-  async function addToCart(id){
+  async function addToCart(id, cartId){
+        console.log(cartId)
         let idProduct = id
-        let idCart = '64a5b2ce13eef43be345ac05'
-        let quantity = 2
+        let idCart = cartId
+        let quantity = 1
         let result = await axios.post(`/api/cart/${idCart}/products/${idProduct}/quantity/${quantity}`)
         console.log(result.status)
         if(result.status === 200){

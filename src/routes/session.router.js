@@ -7,6 +7,10 @@ const router = Router();
 
 router.post("/register", async (req, res) => {
     const data = req.body;
+    const newHashedPassword = createHash(data.password);
+
+    data.password = newHashedPassword;
+
     let response = await UsersManagers.createUser(data);
     if (response === false) {
         return res
@@ -30,6 +34,7 @@ router.post(
             email: req.user.email,
             age: req.user.age,
             role: req.user.rol,
+            cart: req.user.cart,
         };
         return res.send({ status: "success", payload: req.user });
     }
@@ -64,13 +69,11 @@ router.post("/restartPassword", async (req, res) => {
             message: "Contraseña restaurada",
         });
     } else {
-        return res
-            .status(400)
-            .send({
-                status: "error",
-                message:
-                    "Problemas al cambiar la Contraseña intente denuevo mas tarde",
-            });
+        return res.status(400).send({
+            status: "error",
+            message:
+                "Problemas al cambiar la Contraseña intente denuevo mas tarde",
+        });
     }
 });
 
@@ -84,6 +87,7 @@ router.get(
     "/githubcallback",
     passport.authenticate("github", { failureRedirect: "/" }),
     async (req, res) => {
+        console.log("Esto ---->>");
         console.log("exito");
         req.session.user = req.user;
         res.redirect("/home");

@@ -63,6 +63,7 @@ router.get("/home", async (req, res) => {
             res.render("home", {
                 title: "Productos",
                 user: req.session.user,
+                cart: JSON.stringify(req.session.user.cart),
                 product,
             });
         }
@@ -82,7 +83,7 @@ router.get("/chat", (req, res) => {
 });
 
 router.get("/cart", async (req, res) => {
-    let cartId = "64a5b2ce13eef43be345ac05";
+    let cartId = req.session.user.cart;
     await CartsManager.getCartById(cartId).then((product) => {
         let products = JSON.stringify(product.products);
         products = JSON.parse(products);

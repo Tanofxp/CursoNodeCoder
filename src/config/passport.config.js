@@ -1,9 +1,9 @@
 import passport from "passport";
 import GithubStrategy from "passport-github2";
-import userModel from "../DAOs/models/Users.model.js";
 import local from "passport-local";
 import { createHash, validatePassword } from "../utils.js";
-
+import UsersManager from "../DAOs/UsersManagerMongo.class.js";
+const UsersManagers = new UsersManager();
 const LocalStrategy = local.Strategy;
 
 export const intializePassport = () => {
@@ -17,10 +17,10 @@ export const intializePassport = () => {
                     "http://localhost:8080/api/sessions/githubcallback",
             },
             async (accessToken, refreshToken, profile, done) => {
-                console.log(profile);
-                let user = await userModel.findOne({
-                    email: profile._json.html_url,
-                });
+                //console.log(profile);
+                console.log("accessToken -->", accessToken);
+                console.log("refreshToken -->", refreshToken);
+                let user = await UsersManagers.getUser(profile._json.html_url);
 
                 if (!user) {
                     let newUser = {
@@ -30,10 +30,16 @@ export const intializePassport = () => {
                         age: 25,
                         password: "1234",
                     };
-                    const result = await userModel.create(newUser);
+                    const newHashedPassword = createHash(newUser.password);
+                    newUser.password = newHashedPassword;
+                    const result = await UsersManagers.createUser(newUser);
                     done(null, result);
                 } else {
-                    done(null, false);
+                    console.log("usuario Existente");
+                    const result = await UsersManagers.getUser(
+                        profile.profileUrl
+                    );
+                    done(null, result);
                 }
             }
         )
@@ -45,7 +51,7 @@ export const intializePassport = () => {
             { usernameField: "email" },
             async (username, password, done) => {
                 try {
-                    const user = await userModel.findOne({ email: username });
+                    const user = await UsersManagers.getUser(username);
                     if (!user) {
                         console.log("Usuario no encontrado");
                         return done(null, false);
@@ -67,7 +73,7 @@ export const intializePassport = () => {
     });
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userModel.findById(id);
+        let user = await UsersManagers.getUserById(id);
         done(null, user);
     });
 };

@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import userModel from "./models/Users.model.js";
+import ManagerCarts from "../DAOs/CartManagerMongo.class.js";
+const managerCarts = new ManagerCarts();
 
 export default class UsersManager {
     connection = mongoose.connect(
@@ -11,12 +13,15 @@ export default class UsersManager {
         });
         return user;
     }
+    async getUserById(id) {
+        const user = await userModel.findById(id);
+        return user;
+    }
     async authUser(email, password) {
         const user = await userModel.findOne({
             email: email,
             password: password,
         });
-        console.log(user);
         if (!user) return false;
         else return user;
     }
@@ -26,9 +31,9 @@ export default class UsersManager {
         if (exist) {
             return false;
         } else {
+            const cartId = await managerCarts.addCart();
             data.rol = "usuario";
-
-            console.log(data);
+            data.cart = cartId._id.valueOf();
             const res = await userModel.create(data);
             return true, res;
         }
