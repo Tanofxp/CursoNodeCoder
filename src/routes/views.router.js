@@ -27,7 +27,9 @@ router.get("/logout", (req, res) => {
             if (err) {
                 res.status(400).send("Unable to log out");
             } else {
-                res.redirect("/");
+                if (req.cookies["tokenCookie"]) {
+                    res.clearCookie("tokenCookie").status(200).redirect("/");
+                }
             }
         });
     } else {

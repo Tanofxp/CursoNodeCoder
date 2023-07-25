@@ -3,8 +3,13 @@ import GithubStrategy from "passport-github2";
 import local from "passport-local";
 import { createHash, validatePassword } from "../utils.js";
 import UsersManager from "../DAOs/UsersManagerMongo.class.js";
+import jwt from "passport-jwt";
+import { cookieExtractor } from "../utils.js";
+
 const UsersManagers = new UsersManager();
 const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtracJWT = jwt.ExtractJwt;
 
 export const intializePassport = () => {
     passport.use(
@@ -63,6 +68,23 @@ export const intializePassport = () => {
                     return done(null, user);
                 } catch (error) {
                     return done("Error al obtener el usuario: " + error);
+                }
+            }
+        )
+    );
+
+    passport.use(
+        "jwt",
+        new JWTStrategy(
+            {
+                jwtFromRequest: ExtracJWT.fromExtractors([cookieExtractor]),
+                secretOrKey: "C4f3C0nL3ch3",
+            },
+            async (jwtPayload, done) => {
+                try {
+                    return done(null, jwtPayload);
+                } catch (error) {
+                    return done(error);
                 }
             }
         )

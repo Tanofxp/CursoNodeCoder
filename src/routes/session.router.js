@@ -2,6 +2,8 @@ import { Router } from "express";
 import UsersManager from "../DAOs/UsersManagerMongo.class.js";
 import passport from "passport";
 import { createHash, validatePassword } from "../utils.js";
+import jwt from "jsonwebtoken";
+
 const UsersManagers = new UsersManager();
 const router = Router();
 
@@ -23,7 +25,10 @@ router.post("/register", async (req, res) => {
 
 router.post(
     "/login",
-    passport.authenticate("login", { failureRedirect: "/faillogin" }),
+    passport.authenticate("login", {
+        session: false,
+        failureRedirect: "/faillogin",
+    }),
     async (req, res) => {
         if (!req.user)
             return res
@@ -33,14 +38,24 @@ router.post(
             name: req.user.first_name + " " + req.user.last_name,
             email: req.user.email,
             age: req.user.age,
-            role: req.user.rol,
+            rol: req.user.rol,
             cart: req.user.cart,
         };
-        return res.send({ status: "success", payload: req.user });
+        let token = jwt.sign(
+            { email: req.user.email, first_name: req.user.first_name },
+            "C4f3C0nL3ch3",
+            {
+                expiresIn: "24h",
+            }
+        );
+        return res.cookie("tokenCookie", token, { httpOnly: true }).send({
+            status: "success",
+            payload: req.user,
+        });
     }
 );
 
-router.get("api/sessions/faillogin", (req, res) => {
+router.get("/faillogin", (req, res) => {
     res.send({ error: "Failed to login" });
 });
 
@@ -79,18 +94,38 @@ router.post("/restartPassword", async (req, res) => {
 
 router.get(
     "/github",
-    passport.authenticate("github", { scope: "user:email" }),
+    passport.authenticate("github", { scope: "user:email", session: false }),
     (req, res) => {}
 );
 
 router.get(
     "/githubcallback",
-    passport.authenticate("github", { failureRedirect: "/" }),
+    passport.authenticate("github", { session: false, failureRedirect: "/" }),
     async (req, res) => {
-        console.log("Esto ---->>");
-        console.log("exito");
-        req.session.user = req.user;
-        res.redirect("/home");
+        try {
+            console.log("Esto ---->>");
+            console.log("exito");
+            req.session.user = req.user;
+            const token = jwt.sign(
+                { email: req.user.email, first_name: req.user.first_name },
+                "C4f3C0nL3ch3",
+                { expiresIn: "24h" }
+            );
+            res.cookie("tokenCookie", token, { httpOnly: true }).redirect(
+                "/home"
+            );
+        } catch (error) {
+            return next(error);
+        }
+    }
+);
+
+router.get(
+    "/current",
+    passport.authenticate("jwt", { session: false }),
+    (req, res) => {
+        console.log(req.user, "aca estoy");
+        res.send(req.user);
     }
 );
 

@@ -13,6 +13,7 @@ import { messagesModel } from "./DAOs/models/messages.model.js";
 import sessionRouter from "./routes/session.router.js";
 import { intializePassport } from "./config/passport.config.js";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(
     })
 );
 
+app.use(cookieParser());
 app.use(passport.initialize());
 
 app.use("/", viewsRouter);
