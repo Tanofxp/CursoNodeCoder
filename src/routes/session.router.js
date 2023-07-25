@@ -124,7 +124,6 @@ router.get(
     "/current",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        console.log(req.user, "aca estoy");
         res.send(req.user);
     }
 );
