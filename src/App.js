@@ -14,6 +14,7 @@ import sessionRouter from "./routes/session.router.js";
 import { intializePassport } from "./config/passport.config.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
+import config from "./config/config.js";
 
 const app = express();
 
@@ -28,10 +29,9 @@ intializePassport();
 app.use(
     session({
         store: new MongoStore({
-            mongoUrl:
-                "mongodb+srv://danifxp:OG7BXskD2H5e0Kk2@cluster0.n9h3lzv.mongodb.net/ecommerce?retryWrites=true&w=majority",
+            mongoUrl: config.mongoUrl,
         }),
-        secret: "mongoSecret",
+        secret: config.mongoSecret,
         resave: true,
         saveUninitialized: false,
     })
@@ -48,8 +48,8 @@ app.use("/api/sessions", sessionRouter);
 export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();
 
-const expressServer = app.listen(8080, () =>
-    console.log("!Servidor arriba en el puerto 8080!")
+const expressServer = app.listen(config.port, () =>
+    console.log(`!Servidor arriba en el puerto ${config.port}!`)
 );
 
 const socketServer = new Server(expressServer);

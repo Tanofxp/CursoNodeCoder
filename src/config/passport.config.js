@@ -5,6 +5,7 @@ import { createHash, validatePassword } from "../utils.js";
 import UsersManager from "../DAOs/UsersManagerMongo.class.js";
 import jwt from "passport-jwt";
 import { cookieExtractor } from "../utils.js";
+import config from "../config/config.js";
 
 const UsersManagers = new UsersManager();
 const LocalStrategy = local.Strategy;
@@ -16,10 +17,9 @@ export const intializePassport = () => {
         "github",
         new GithubStrategy(
             {
-                clientID: "Iv1.10eab8999288a773",
-                clientSecret: "ca928a9d138a6cf5d1adf980522bcec189d2d4cf",
-                callbackURL:
-                    "http://localhost:8080/api/sessions/githubcallback",
+                clientID: config.gitClientId,
+                clientSecret: config.gitClientsecret,
+                callbackURL: config.githubCallbackPath,
             },
             async (accessToken, refreshToken, profile, done) => {
                 //console.log(profile);
@@ -78,7 +78,7 @@ export const intializePassport = () => {
         new JWTStrategy(
             {
                 jwtFromRequest: ExtracJWT.fromExtractors([cookieExtractor]),
-                secretOrKey: "C4f3C0nL3ch3",
+                secretOrKey: config.passportSK,
             },
             async (jwtPayload, done) => {
                 try {

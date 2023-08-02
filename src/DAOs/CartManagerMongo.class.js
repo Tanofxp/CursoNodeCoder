@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import { cartsModel } from "./models/carts.model.js";
 import ProductManager from "./ProductManagerMongo.class.js";
+import config from "../config/config.js";
 
 export default class CartManager {
-    connection = mongoose.connect(
-        "mongodb+srv://danifxp:OG7BXskD2H5e0Kk2@cluster0.n9h3lzv.mongodb.net/ecommerce?retryWrites=true&w=majority"
-    );
+    connection = mongoose.connect(config.mongoUrl);
     productManager = new ProductManager();
     async getCart() {
         let result = await cartsModel.find();
