@@ -1,5 +1,7 @@
 import { Router } from "express";
 import UsersManager from "../DAOs/UsersManagerMongo.class.js";
+import CurrentUserDTO from "../DTO/user.dto.js";
+
 import passport from "passport";
 import { createHash, validatePassword } from "../utils.js";
 import jwt from "jsonwebtoken";
@@ -124,7 +126,8 @@ router.get(
     "/current",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        res.send(req.user);
+        console.log(req);
+        res.send(new CurrentUserDTO(req.user));
     }
 );
 
