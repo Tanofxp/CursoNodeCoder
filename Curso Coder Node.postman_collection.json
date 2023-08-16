@@ -1,236 +1,428 @@
 {
-    "info": {
-        "_postman_id": "1e66ea0c-0886-4843-bfcc-86dc4c7e73a1",
-        "name": "Curso Coder Node",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "_exporter_id": "21019869"
-    },
-    "item": [
-        {
-            "name": "Products",
-            "item": [
-                {
-                    "name": "GetByID",
-                    "protocolProfileBehavior": {
-                        "disableBodyPruning": true
-                    },
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\r\n    \"data\":{\r\n    \"usermail\": \"Danifxp\",\r\n    \"long\": -34.60376,\r\n    \"lat\": -58.38162\r\n        }\r\n}",
-                            "options": {
-                                "raw": {
-                                    "language": "json"
-                                }
-                            }
-                        },
-                        "url": {
-                            "raw": "http://localhost:8080/api/products/10",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products", "10"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GetProducts",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/products/",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products", ""]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GetProducts + Limit",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/products?limit=2",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products"],
-                            "query": [
-                                {
-                                    "key": "limit",
-                                    "value": "2"
-                                }
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "UpdateProduct",
-                    "request": {
-                        "method": "PUT",
-                        "header": [],
-                        "body": {
-                            "mode": "urlencoded",
-                            "urlencoded": [
-                                {
-                                    "key": "title",
-                                    "value": "Messi campeón del mundo",
-                                    "type": "text"
-                                }
-                            ]
-                        },
-                        "url": {
-                            "raw": "http://localhost:8080/api/products/11",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products", "11"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Post Products",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                            "mode": "urlencoded",
-                            "urlencoded": [
-                                {
-                                    "key": "title",
-                                    "value": "Messi campeón del mundo",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "descripcion",
-                                    "value": "¿Sabés quién era el ídolo de Messi cuando era chico? ¿Conocés todos los títulos que ganó Leo a lo largo de su carrera? ¿Querés conocer todo lo que pasó en este Mundial? ",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "price",
-                                    "value": "300",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "code",
-                                    "value": "11",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "stock",
-                                    "value": "50",
-                                    "type": "text"
-                                },
-                                {
-                                    "key": "thumbnail",
-                                    "value": "https://catalogos.libooks.com/9789878151335_md.webp",
-                                    "type": "text"
-                                }
-                            ]
-                        },
-                        "url": {
-                            "raw": "http://localhost:8080/api/products/",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products", ""]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "DeleteByID",
-                    "request": {
-                        "method": "DELETE",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/products/11",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "products", "11"]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        },
-        {
-            "name": "Cart",
-            "item": [
-                {
-                    "name": "GetCart",
-                    "request": {
-                        "method": "GET",
-                        "header": []
-                    },
-                    "response": []
-                },
-                {
-                    "name": "GetCartById",
-                    "request": {
-                        "method": "GET",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/cart/28b6cf6a-ca47-4ac6-93fb-5565709a77f2",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": [
-                                "api",
-                                "cart",
-                                "28b6cf6a-ca47-4ac6-93fb-5565709a77f2"
-                            ]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Post Cart",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/cart",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": ["api", "cart"]
-                        }
-                    },
-                    "response": []
-                },
-                {
-                    "name": "Post ProductIntTheCart",
-                    "request": {
-                        "method": "POST",
-                        "header": [],
-                        "url": {
-                            "raw": "http://localhost:8080/api/cart/28b6cf6a-ca47-4ac6-93fb-5565709a77f2/products/11",
-                            "protocol": "http",
-                            "host": ["localhost"],
-                            "port": "8080",
-                            "path": [
-                                "api",
-                                "cart",
-                                "28b6cf6a-ca47-4ac6-93fb-5565709a77f2",
-                                "products",
-                                "11"
-                            ]
-                        }
-                    },
-                    "response": []
-                }
-            ]
-        }
-    ]
+	"info": {
+		"_postman_id": "1e66ea0c-0886-4843-bfcc-86dc4c7e73a1",
+		"name": "Curso Coder Node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21019869"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "GetByID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data\":{\r\n    \"usermail\": \"Danifxp\",\r\n    \"long\": -34.60376,\r\n    \"lat\": -58.38162\r\n        }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/6490d9614382fe5300a2a001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"6490d9614382fe5300a2a001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProducts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "filtro",
+									"value": "price",
+									"disabled": true
+								},
+								{
+									"key": "filtroVal",
+									"value": "200",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProducts + Limit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products?limit=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Messi campeón del mundo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/6490d9614382fe5300a2a001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"6490d9614382fe5300a2a001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Products",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "¿Quién es el padre?",
+									"type": "text"
+								},
+								{
+									"key": "descripcion",
+									"value": "Una camioneta con la leyenda ¿Quién es tu padre? recorre hoy las calles de Nueva York ofreciendo el test de ADN a transeúntes con dudas sobre su identidad o la de sus hijos.",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "500",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "13",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "25",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"value": "https://catalogos.libooks.com/9789878012452_md.webp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteByID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/649114aa7f436fc34a2e9d13",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"649114aa7f436fc34a2e9d13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "GetCart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCartById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/649e1af43c56abc4944c62df",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"649e1af43c56abc4944c62df"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post ProductIntTheCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/649e1af43c56abc4944c62df/products/6490d8994382fe5300a29ff8/quantity/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"649e1af43c56abc4944c62df",
+								"products",
+								"6490d8994382fe5300a29ff8",
+								"quantity",
+								"2"
+							],
+							"query": [
+								{
+									"key": "cart",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update cartQuantitiProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/cart/649e1af43c56abc4944c62df/products/6490d8014382fe5300a29ff6/quantity/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"649e1af43c56abc4944c62df",
+								"products",
+								"6490d8014382fe5300a29ff6",
+								"quantity",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update cartProduct",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"data\": [\r\n{\"product\": \"6490d9394382fe5300a29fff\", \"quantity\": \"2\"},\r\n{\"product\": \"6490d9044382fe5300a29ffb\", \"quantity\": \"3\"}\r\n]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/cart/649e1af43c56abc4944c62df",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"cart",
+								"649e1af43c56abc4944c62df"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sessions",
+			"item": [
+				{
+					"name": "get Current",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"https://github.com/Tanofxp\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/sessions/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"sessions",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
 }
