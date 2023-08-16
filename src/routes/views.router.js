@@ -1,6 +1,8 @@
 import { Router } from "express";
 const router = Router();
 import socketServer, { ProductsManager, CartsManager } from "../App.js";
+import { rolesMiddlewareUser } from "./middleware/role.middleware.js";
+import passport from "passport";
 
 router.get("/register", (req, res) => {
     res.render("register");
@@ -14,7 +16,7 @@ router.get("/", (req, res) => {
     res.render("login");
 });
 router.get("/profile", (req, res) => {
-    console.log(req.session);
+    // console.log(req.session.user);
     res.render("profile", {
         user: req.session.user,
         isAdmin: req.session.user.rol === "admin",
@@ -80,9 +82,14 @@ router.get("/realtimeproducts", async (req, res) => {
     });
 });
 
-router.get("/chat", (req, res) => {
-    res.render("chat");
-});
+router.get(
+    "/chat",
+    passport.authenticate("jwt", { session: false }),
+    rolesMiddlewareUser,
+    async (req, res) => {
+        res.render("chat");
+    }
+);
 
 router.get("/cart", async (req, res) => {
     let cartId = req.session.user.cart;

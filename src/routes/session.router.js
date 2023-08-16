@@ -106,10 +106,9 @@ router.get(
     passport.authenticate("github", { session: false, failureRedirect: "/" }),
     async (req, res) => {
         try {
-            console.log("Esto ---->>");
             console.log("exito");
-            req.user.name = req.user.first_name;
             req.session.user = req.user;
+            // console.log("Esto ---->>", req["session"]["user"]);
             const token = jwt.sign(
                 { email: req.user.email, first_name: req.user.first_name },
                 "C4f3C0nL3ch3",

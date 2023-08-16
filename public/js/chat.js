@@ -5,18 +5,17 @@ const chatbox = document.getElementById("chatbox");
 const messageLogs = document.getElementById("messageLogs");
 const button = document.getElementById("enviar");
 
-Swal.fire({
-    title: "Identificate",
-    input: "text",
-    inputValidator: (value) => {
-        return !value && "necesitas escribir un nombre para identificarte";
-    },
-    allowOutsideClick: false,
-}).then((result) => {
-    console.log(result.value);
-    user = result.value;
-    socket.emit("authenticatedUser", user);
-});
+axios
+    .get("/api/sessions/current")
+    .then((res) => {
+        console.log(res.data.name);
+        user = res.data.name;
+        socket.emit("authenticatedUser", user);
+        document.getElementById("user").innerText = user;
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
 chatbox.addEventListener("keyup", (evt) => {
     if (evt.key === "Enter") {
