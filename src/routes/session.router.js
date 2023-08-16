@@ -43,6 +43,7 @@ router.post(
             rol: req.user.rol,
             cart: req.user.cart,
         };
+
         let token = jwt.sign(
             { email: req.user.email, first_name: req.user.first_name },
             "C4f3C0nL3ch3",
@@ -107,6 +108,7 @@ router.get(
         try {
             console.log("Esto ---->>");
             console.log("exito");
+            req.user.name = req.user.first_name;
             req.session.user = req.user;
             const token = jwt.sign(
                 { email: req.user.email, first_name: req.user.first_name },
@@ -126,8 +128,8 @@ router.get(
     "/current",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
-        console.log(req);
-        res.send(new CurrentUserDTO(req.user));
+        console.log(req.session.user);
+        res.send(new CurrentUserDTO(req.session.user));
     }
 );
 

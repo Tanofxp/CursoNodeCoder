@@ -1,5 +1,7 @@
 import { Router } from "express";
 import ManagerCarts from "../DAOs/CartManagerMongo.class.js";
+import passport from "passport";
+import { verificarPertenenciaCarrito } from "./middleware/cart.middleware.js";
 const router = Router();
 const managerCarts = new ManagerCarts();
 
@@ -19,15 +21,20 @@ router.post("/", async (req, res) => {
     res.send({ status: "success" });
 });
 
-router.post("/:cid/products/:pid/quantity/:q", async (req, res) => {
-    console.log(req.params.cid, req.params.pid, req.params.q);
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
-    const quantity = req.params.q;
+router.post(
+    "/:cid/products/:pid/quantity/:q",
+    passport.authenticate("jwt", { session: false }),
+    verificarPertenenciaCarrito,
+    async (req, res) => {
+        console.log(req.params.cid, req.params.pid, req.params.q);
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        const quantity = req.params.q;
 
-    await managerCarts.addToCart(cartId, productId, quantity);
-    res.send({ status: "success" });
-});
+        await managerCarts.addToCart(cartId, productId, quantity);
+        res.send({ status: "success" });
+    }
+);
 
 router.delete("/:cid/product/:pid", async (req, res) => {
     let cartId = req.params.cid;
@@ -44,13 +51,18 @@ router.delete("/:cid", async (req, res) => {
     res.send({ status: "success" });
 });
 
-router.put("/:cid/products/:pid/quantity/:q", async (req, res) => {
-    let cartId = req.params.cid;
-    let prodcutId = req.params.pid;
-    let quantity = req.params.q;
-    await managerCarts.updateCartQuantity(cartId, prodcutId, quantity);
-    res.send({ status: "success" });
-});
+router.put(
+    "/:cid/products/:pid/quantity/:q",
+    passport.authenticate("jwt", { session: false }),
+    verificarPertenenciaCarrito,
+    async (req, res) => {
+        let cartId = req.params.cid;
+        let prodcutId = req.params.pid;
+        let quantity = req.params.q;
+        await managerCarts.updateCartQuantity(cartId, prodcutId, quantity);
+        res.send({ status: "success" });
+    }
+);
 router.put("/:cid", async (req, res) => {
     let cartId = req.params.cid;
     let data = req.body;

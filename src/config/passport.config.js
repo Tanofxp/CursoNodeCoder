@@ -22,7 +22,6 @@ export const intializePassport = () => {
                 callbackURL: config.githubCallbackPath,
             },
             async (accessToken, refreshToken, profile, done) => {
-                //console.log(profile);
                 console.log("accessToken -->", accessToken);
                 console.log("refreshToken -->", refreshToken);
                 let user = await UsersManagers.getUser(profile._json.html_url);
