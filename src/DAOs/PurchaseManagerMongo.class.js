@@ -11,12 +11,23 @@ export default class PurchaseManager {
     managerCarts = new ManagerCarts();
     async stockControl(cid) {
         const cart = await this.managerCarts.getCartById(cid);
-        console.log("esto es el control de stock", cart);
+        if (cart.products.length > 0) {
+            console.log(cart.products);
+            cart.products.forEach((e) => {
+                console.log(e.product.stock);
+            });
+            let a = "esto tiene algo";
+            return a;
+        } else {
+            let a = "esto no tiene nada gato";
+            return a;
+        }
     }
 
     async addPurchase(id) {
         try {
-            console.log(id);
+            let resStok = await this.stockControl(id.cart);
+            console.log(resStok);
             let purchase = new Object();
             let date = new Date();
 
@@ -25,9 +36,9 @@ export default class PurchaseManager {
             purchase.amount = 500;
             purchase.purchaser = id.email;
 
-            let result = await purchaseModel.create(purchase);
-            console.log(result);
-            return result;
+            //let result = await purchaseModel.create(purchase);
+            //console.log(result);
+            //return result;
         } catch (e) {
             console.log(e);
             return e;
