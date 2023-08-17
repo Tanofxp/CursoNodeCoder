@@ -9,7 +9,7 @@ const PurchaseSchema = new mongoose.Schema(
             required: true,
         },
         code: {
-            type: Number,
+            type: String,
             required: true,
             unique: true,
         },

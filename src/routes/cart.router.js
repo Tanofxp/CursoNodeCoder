@@ -28,8 +28,7 @@ router.post(
     passport.authenticate("jwt", { session: false }),
     verificarPertenenciaCarrito,
     async (req, res) => {
-        const cartId = req.params.cid;
-        await managerPurchase.stockControl(cartId);
+        await managerPurchase.addPurchase(req.session.user);
         res.send({ status: "success" });
     }
 );
