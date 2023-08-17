@@ -1,9 +1,11 @@
 import { Router } from "express";
 import ManagerCarts from "../DAOs/CartManagerMongo.class.js";
+import ManagerPurchase from "../DAOs/PurchaseManagerMongo.class.js";
 import passport from "passport";
 import { verificarPertenenciaCarrito } from "./middleware/cart.middleware.js";
 const router = Router();
 const managerCarts = new ManagerCarts();
+const managerPurchase = new ManagerPurchase();
 
 router.get("/", async (req, res) => {
     const carts = await managerCarts.getCart();
@@ -20,6 +22,17 @@ router.post("/", async (req, res) => {
     await managerCarts.addCart();
     res.send({ status: "success" });
 });
+
+router.post(
+    "/:cid/purchase",
+    passport.authenticate("jwt", { session: false }),
+    verificarPertenenciaCarrito,
+    async (req, res) => {
+        const cartId = req.params.cid;
+        await managerPurchase.stockControl(cartId);
+        res.send({ status: "success" });
+    }
+);
 
 router.post(
     "/:cid/products/:pid/quantity/:q",
