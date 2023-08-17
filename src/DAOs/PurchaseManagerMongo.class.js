@@ -10,35 +10,55 @@ export default class PurchaseManager {
     productManager = new ProductManager();
     managerCarts = new ManagerCarts();
     async stockControl(cid) {
-        const cart = await this.managerCarts.getCartById(cid);
+        let total = 0;
+        let cart = await this.managerCarts.getCartById(cid);
         if (cart.products.length > 0) {
-            console.log(cart.products);
-            cart.products.forEach((e) => {
-                console.log(e.product.stock);
-            });
-            let a = "esto tiene algo";
-            return a;
+            for (const e of cart.products) {
+                if (e.product.stock > 0) {
+                    total = total + e.product.price;
+                    e.product.stock = e.product.stock - e.quantity;
+                    await this.productManager.updateProductById(
+                        e.product._id,
+                        e.product
+                    );
+                    await this.managerCarts.deleteProductFromCart(
+                        cid,
+                        e._id.valueOf()
+                    );
+                } else {
+                    let sinStock = [];
+                    sinStock.push(e.product._id.valueOf());
+                    console.log(
+                        "TENGO EL STOCK EN 0 DE LOS SIGUIENTES ACTICULOS ",
+                        sinStock
+                    );
+                }
+            }
+
+            return total;
         } else {
-            let a = "esto no tiene nada gato";
+            let a = "El Carrito esta Vacio";
             return a;
         }
     }
 
     async addPurchase(id) {
         try {
-            let resStok = await this.stockControl(id.cart);
-            console.log(resStok);
+            let resStock = await this.stockControl(id.cart);
+
             let purchase = new Object();
             let date = new Date();
 
             purchase.purchase_datetime = date;
             purchase.code = uuidV4();
-            purchase.amount = 500;
+            purchase.amount = resStock;
             purchase.purchaser = id.email;
 
-            //let result = await purchaseModel.create(purchase);
-            //console.log(result);
-            //return result;
+            if (purchase.amount > 0) {
+                let result = await purchaseModel.create(purchase);
+                console.log(result);
+                return result;
+            }
         } catch (e) {
             console.log(e);
             return e;

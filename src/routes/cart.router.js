@@ -38,7 +38,7 @@ router.post(
     passport.authenticate("jwt", { session: false }),
     verificarPertenenciaCarrito,
     async (req, res) => {
-        console.log(req.params.cid, req.params.pid, req.params.q);
+        // console.log(req.params.cid, req.params.pid, req.params.q);
         const cartId = req.params.cid;
         const productId = req.params.pid;
         const quantity = req.params.q;

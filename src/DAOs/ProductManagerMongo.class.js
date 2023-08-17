@@ -49,6 +49,7 @@ export default class ProductManager {
             { _id: id },
             { $set: updatedProduct }
         );
+
         return result;
     }
 

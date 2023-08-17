@@ -32,11 +32,34 @@
               ${{product.price}}
             </h5>
             <h5>
-              {{quantity}} unidades
+              Unidades: {{quantity}}
             </h5>
+            <h5>
+              Stock: {{product.stock}}
+            </h5>
+            <button id="{{_id}}" name="{{../cartId}}" class="btn btn-primary" onclick="eliminar(this.name, this.id)">
+              Eliminar
+            </button>
           </div>
         </div>
       </div>
     {{/each}}
   </div>
+  <div class="text-center mb-5">
+    <button id="{{cartId}}" class="btn btn-success" onclick="comprar(this.id)">
+      Comprar
+    </button>
+  </div>
 </div>
+
+<script>
+  async function eliminar (cid, pid){
+    await axios.delete(`api/cart/${cid}/product/${pid}`)
+    window.location.reload()
+  }
+
+  async function comprar(cid){
+    await axios.post(`api/cart/${cid}/purchase`)
+    window.location.reload()
+  }
+</script>

@@ -8,7 +8,7 @@ export default class CartManager {
     productManager = new ProductManager();
     async getCart() {
         let result = await cartsModel.find();
-        console.log(result);
+        // console.log(result);
         return result;
     }
 
@@ -16,9 +16,9 @@ export default class CartManager {
         let cart = {
             product: [],
         };
-        console.log(cart);
+        // console.log(cart);
         let result = await cartsModel.create(cart);
-        console.log(result);
+        // console.log(result);
         return result;
     }
 
@@ -26,7 +26,7 @@ export default class CartManager {
         let result = await cartsModel
             .findOne({ _id: id })
             .populate("products.product");
-        console.log(result);
+        // console.log(result);
         return result;
     }
 
@@ -41,10 +41,12 @@ export default class CartManager {
     }
 
     async deleteProductFromCart(idCart, idProduct) {
+        console.log("id producto----->", idProduct);
         const cart = await this.getCartById(idCart);
         cart.products.pull(idProduct);
         await cart.save();
-        return;
+        console.log("se borró");
+        return "se borró";
     }
 
     async deleteAllProductsFromCart(idCart) {

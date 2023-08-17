@@ -16,7 +16,6 @@ router.get("/", (req, res) => {
     res.render("login");
 });
 router.get("/profile", (req, res) => {
-    // console.log(req.session.user);
     res.render("profile", {
         user: req.session.user,
         isAdmin: req.session.user.rol === "admin",
@@ -99,6 +98,7 @@ router.get("/cart", async (req, res) => {
         res.render("cart", {
             title: "Carrito",
             products,
+            cartId,
         });
     });
 });
