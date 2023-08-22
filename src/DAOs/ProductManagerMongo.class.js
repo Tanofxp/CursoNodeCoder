@@ -64,4 +64,8 @@ export default class ProductManager {
         inStock.push(...products.filter((product) => product.stock > 0));
         return inStock;
     }
+    async getMockingProducts() {
+        let result = await productsModel.find();
+        return result;
+    }
 }

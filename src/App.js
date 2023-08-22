@@ -11,6 +11,7 @@ import ProductManager from "./DAOs/ProductManagerMongo.class.js";
 import CartManager from "./DAOs/CartManagerMongo.class.js";
 import { messagesModel } from "./DAOs/models/messages.model.js";
 import sessionRouter from "./routes/session.router.js";
+import mockingproducts from "./routes/mocking.router.js";
 import { intializePassport } from "./config/passport.config.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
@@ -44,6 +45,7 @@ app.use("/", viewsRouter);
 app.use("/api/cart", routerCart);
 app.use("/api/products/", routerProduct);
 app.use("/api/sessions", sessionRouter);
+app.use("/api/mockingproducts", mockingproducts);
 
 export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();
