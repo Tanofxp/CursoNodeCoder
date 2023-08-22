@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import socketServer, { ProductsManager, CartsManager } from "../App.js";
-import { rolesMiddlewareUser } from "./middleware/role.middleware.js";
+import { rolesMiddlewareUser } from "../middleware/role.middleware.js";
 import passport from "passport";
 
 router.get("/register", (req, res) => {

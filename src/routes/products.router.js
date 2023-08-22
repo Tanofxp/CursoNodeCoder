@@ -1,6 +1,6 @@
 import { Router } from "express";
 import socketServer, { ProductsManager } from "../App.js";
-import { rolesMiddlewareAdmin } from "./middleware/role.middleware.js";
+import { rolesMiddlewareAdmin } from "../middleware/role.middleware.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 const router = Router();

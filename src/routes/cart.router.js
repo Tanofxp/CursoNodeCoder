@@ -2,7 +2,7 @@ import { Router } from "express";
 import ManagerCarts from "../DAOs/CartManagerMongo.class.js";
 import ManagerPurchase from "../DAOs/PurchaseManagerMongo.class.js";
 import passport from "passport";
-import { verificarPertenenciaCarrito } from "./middleware/cart.middleware.js";
+import { verificarPertenenciaCarrito } from "../middleware/cart.middleware.js";
 const router = Router();
 const managerCarts = new ManagerCarts();
 const managerPurchase = new ManagerPurchase();
