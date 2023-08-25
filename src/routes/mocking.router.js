@@ -1,10 +1,11 @@
 import { Router } from "express";
-import socketServer, { ProductsManager } from "../App.js";
+import { generateProductsMock } from "../mocks/products.mock.js";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
-    const product = await ProductsManager.getMockingProducts();
+    const product = await generateProductsMock(100);
+    console.log(product);
     res.send(product);
 });
 
