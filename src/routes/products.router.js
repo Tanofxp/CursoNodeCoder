@@ -35,22 +35,34 @@ router.post(
     "/",
     passport.authenticate("jwt", { session: false }),
     rolesMiddlewareAdmin,
-    async (req, res) => {
-        const product = await ProductsManager.addProduct(req.body);
-        socketServer.emit("newProduct", product);
-        res.send(product);
+    async (req, res, next) => {
+        if (req.session.user.role == "admin") {
+            try {
+                const product = await ProductsManager.addProduct(req.body);
+                socketServer.emit("newProduct", product);
+                res.send(product);
+            } catch (error) {
+                return next(error)
+            }
+        }
+
     }
 );
 router.put("/:id", async (req, res) => {
-    const product = await ProductsManager.updateProductById(
-        req.params.id,
-        req.body
-    );
-    if (product.matchedCount > 0) {
-        const newProduct = await ProductsManager.getProductById(req.params.id);
-        socketServer.emit("updateProduct", newProduct);
+    if (req.session.user.role == "admin") {
+        const product = await ProductsManager.updateProductById(
+            req.params.id,
+            req.body
+        );
+        if (product.matchedCount > 0) {
+            const newProduct = await ProductsManager.getProductById(req.params.id);
+            socketServer.emit("updateProduct", newProduct);
+        }
+        res.send(product);
+    } else {
+        res.send({ error: "acceso denegado" })
     }
-    res.send(product);
+
 });
 
 router.delete(
@@ -58,9 +70,14 @@ router.delete(
     passport.authenticate("jwt", { session: false }),
     rolesMiddlewareAdmin,
     async (req, res) => {
-        const product = await ProductsManager.deleteProduct(req.params.id);
-        socketServer.emit("deleteProduct", req.params.id);
-        res.send(product);
+        if (req.session.user.role == "admin") {
+            const product = await ProductsManager.deleteProduct(req.params.id);
+            socketServer.emit("deleteProduct", req.params.id);
+            res.send(product);
+        }
+        else {
+            res.send({ error: "acceso denegado" })
+        }
     }
 );
 

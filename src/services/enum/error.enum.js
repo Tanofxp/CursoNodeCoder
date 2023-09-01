@@ -3,6 +3,5 @@ export const ErrorEnum = {
     INVALID_TYPES_ERROR: 2,
     DATABASE_ERROR: 3,
     PARAM_ERROR: 4,
-    PRODUCT_ALREADY_EXISTS: 5,
-    PRODUCT_DOES_NOT_EXIST: 6,
+    EMPTY_FIELD_ERROR: 5,
 };

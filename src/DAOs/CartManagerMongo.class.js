@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { cartsModel } from "./models/carts.model.js";
 import ProductManager from "./ProductManagerMongo.class.js";
 import config from "../config/config.js";
+import CustomError from "../services/Error/CustomError.class.js";
+import { ErrorEnum } from "../services/enum/error.enum.js";
 
 export default class CartManager {
     connection = mongoose.connect(config.mongoUrl);
@@ -13,6 +15,7 @@ export default class CartManager {
     }
 
     async addCart() {
+
         let cart = {
             product: [],
         };
@@ -23,6 +26,13 @@ export default class CartManager {
     }
 
     async getCartById(id) {
+        if (!id) {
+            CustomError.createError({
+                name: "error al obtener el carrito",
+                cause: "El carrito no se encuentra en nuestra base de datos",
+                code: ErrorEnum.DATABASE_ERROR,
+            });
+        }
         let result = await cartsModel
             .findOne({ _id: id })
             .populate("products.product");
@@ -31,6 +41,13 @@ export default class CartManager {
     }
 
     async addToCart(idCart, idProduct, q) {
+        if (!idCart || !idProduct || !q || idCart.includes(" ") || idProduct.includes(" ")) {
+            CustomError.createError({
+                name: "error al agregar al carrito",
+                cause: "Debe ingresar una id del carrito y del producto a agregar",
+                code: ErrorEnum.PARAM_ERROR,
+            });
+        }
         let product = await this.productManager.getProductById(idProduct);
         let cart = await this.getCartById(idCart);
         cart.products.push({ product: product, quantity: q });
@@ -41,6 +58,13 @@ export default class CartManager {
     }
 
     async deleteProductFromCart(idCart, idProduct) {
+        if (!idCart || !idProduct || idCart.includes(" ") || idProduct.includes(" ")) {
+            CustomError.createError({
+                name: "error al agregar al carrito",
+                cause: "Debe ingresar una id del carrito y del producto a agregar",
+                code: ErrorEnum.PARAM_ERROR,
+            });
+        }
         console.log("id producto----->", idProduct);
         const cart = await this.getCartById(idCart);
         cart.products.pull(idProduct);
@@ -50,6 +74,13 @@ export default class CartManager {
     }
 
     async deleteAllProductsFromCart(idCart) {
+        if (!idCart || idCart.includes(" ")) {
+            CustomError.createError({
+                name: "error al agregar al carrito",
+                cause: "Debe ingresar una id del carrito y del producto a agregar",
+                code: ErrorEnum.PARAM_ERROR,
+            });
+        }
         const cart = await this.getCartById(idCart);
         cart.products = [];
         await cart.save();
@@ -57,6 +88,13 @@ export default class CartManager {
     }
 
     async updateCartQuantity(idCart, idProduct, q) {
+        if (!idCart || !idProduct || !q || idCart.includes(" ") || idProduct.includes(" ")) {
+            CustomError.createError({
+                name: "error al agregar al carrito",
+                cause: "Debe ingresar una id del carrito y del producto a agregar",
+                code: ErrorEnum.PARAM_ERROR,
+            });
+        }
         let cart = await this.getCartById(idCart);
         let productos = cart.products;
         let este = productos.find(
@@ -68,6 +106,13 @@ export default class CartManager {
         return;
     }
     async updateCartProducts(idCart, data) {
+        if (!idCart || !data || idCart.includes(" ")) {
+            CustomError.createError({
+                name: "error al agregar al carrito",
+                cause: "Debe ingresar una id del carrito y del producto a agregar",
+                code: ErrorEnum.PARAM_ERROR,
+            });
+        }
         await this.deleteAllProductsFromCart(idCart);
         let cart = await this.getCartById(idCart);
         data.data.forEach((e) => {

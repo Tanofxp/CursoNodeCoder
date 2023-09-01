@@ -16,8 +16,12 @@ import { intializePassport } from "./config/passport.config.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import config from "./config/config.js";
+import routerLogger from './routes/logger.router.js';
+import { errorMiddleware } from './middleware/error.middleware.js';
+import { addLogger } from './config/logger.config.js';
 
 const app = express();
+app.use(addLogger)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -46,6 +50,8 @@ app.use("/api/cart", routerCart);
 app.use("/api/products/", routerProduct);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/mockingproducts", mockingproducts);
+app.use('/logger/', routerLogger)
+app.use(errorMiddleware)
 
 export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();

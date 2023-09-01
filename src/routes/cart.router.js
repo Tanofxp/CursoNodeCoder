@@ -12,10 +12,16 @@ router.get("/", async (req, res) => {
     res.send(carts);
 });
 
-router.get("/:id", async (req, res) => {
-    const id = req.params.id;
-    const cart = await managerCarts.getCartById(id);
-    res.send(cart);
+router.get("/:id", async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const cart = await managerCarts.getCartById(id);
+        req.logger.debug(cart)
+        res.send(cart);
+    } catch (error) {
+        return next(error)
+    }
+
 });
 
 router.post("/", async (req, res) => {
@@ -37,49 +43,78 @@ router.post(
     "/:cid/products/:pid/quantity/:q",
     passport.authenticate("jwt", { session: false }),
     verificarPertenenciaCarrito,
-    async (req, res) => {
-        // console.log(req.params.cid, req.params.pid, req.params.q);
-        const cartId = req.params.cid;
-        const productId = req.params.pid;
-        const quantity = req.params.q;
+    async (req, res, next) => {
+        try {
+            const cartId = req.params.cid;
+            const productId = req.params.pid;
+            const quantity = req.params.q;
 
-        await managerCarts.addToCart(cartId, productId, quantity);
-        res.send({ status: "success" });
+            await managerCarts.addToCart(cartId, productId, quantity);
+            res.send({ status: "success" });
+        } catch (error) {
+            return next(error)
+        }
+
+
     }
 );
 
-router.delete("/:cid/product/:pid", async (req, res) => {
-    let cartId = req.params.cid;
-    let productId = req.params.pid;
+router.delete("/:cid/product/:pid", async (req, res, next) => {
+    try {
+        let cartId = req.params.cid;
+        let productId = req.params.pid;
 
-    await managerCarts.deleteProductFromCart(cartId, productId);
+        await managerCarts.deleteProductFromCart(cartId, productId);
 
-    res.send({ status: "success" });
+        res.send({ status: "success" });
+    } catch (error) {
+        req.logger.error(error)
+        return next(error)
+    }
+
 });
 
-router.delete("/:cid", async (req, res) => {
-    let cartId = req.params.cid;
-    await managerCarts.deleteAllProductsFromCart(cartId);
-    res.send({ status: "success" });
+router.delete("/:cid", async (req, res, next) => {
+    try {
+        let cartId = req.params.cid;
+        await managerCarts.deleteAllProductsFromCart(cartId);
+        res.send({ status: "success" });
+    } catch (error) {
+        req.logger.error(error)
+        return next(error)
+    }
+
 });
 
 router.put(
     "/:cid/products/:pid/quantity/:q",
     passport.authenticate("jwt", { session: false }),
     verificarPertenenciaCarrito,
-    async (req, res) => {
-        let cartId = req.params.cid;
-        let prodcutId = req.params.pid;
-        let quantity = req.params.q;
-        await managerCarts.updateCartQuantity(cartId, prodcutId, quantity);
-        res.send({ status: "success" });
+    async (req, res, next) => {
+        try {
+            let cartId = req.params.cid;
+            let prodcutId = req.params.pid;
+            let quantity = req.params.q;
+            await managerCarts.updateCartQuantity(cartId, prodcutId, quantity);
+            res.send({ status: "success" });
+        } catch (error) {
+            req.logger.error(error)
+            return next(error)
+        }
+
     }
 );
-router.put("/:cid", async (req, res) => {
-    let cartId = req.params.cid;
-    let data = req.body;
-    await managerCarts.updateCartProducts(cartId, data);
-    res.send({ status: "success" });
+router.put("/:cid", async (req, res, next) => {
+    try {
+        let cartId = req.params.cid;
+        let data = req.body;
+        await managerCarts.updateCartProducts(cartId, data);
+        res.send({ status: "success" });
+    } catch (error) {
+        req.logger.error(error)
+        return next(error)
+    }
+
 });
 
 export default router;
