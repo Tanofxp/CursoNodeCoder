@@ -11,6 +11,9 @@ router.get("/register", (req, res) => {
 router.get("/resetPassword", (req, res) => {
     res.render("resetPassword");
 });
+router.get("/requestResetPassword", (req, res) => {
+    res.render("requestResetPassword");
+});
 
 router.get("/", (req, res) => {
     res.render("login");
