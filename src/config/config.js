@@ -11,4 +11,6 @@ export default {
     gitClientsecret: process.env.PASSPORT_GIT_CLIENT_SECRET,
     githubCallbackPath: process.env.PASSPORT_CALLBACK_URL,
     ENVIRONMENT: process.env.ENVIRONMENT,
+    nodemailUser: process.env.NODEMAIL_USER,
+    nodemailPass: process.env.NODEMAIL_PASS,
 };
