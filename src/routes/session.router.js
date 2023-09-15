@@ -1,7 +1,8 @@
 import { Router } from "express";
 import UsersManager from "../DAOs/UsersManagerMongo.class.js";
+import Mail from "../config/nodemailer.config.js";
 import CurrentUserDTO from "../DTO/user.dto.js";
-
+import config from "../config/config.js";
 import passport from "passport";
 import { createHash, validatePassword } from "../utils.js";
 import jwt from "jsonwebtoken";
@@ -22,6 +23,49 @@ router.post("/register", async (req, res) => {
             .send({ status: "error", message: "El usuario ya existe" });
     } else {
         res.send({ status: "success", message: "usuario  registrado" });
+    }
+});
+
+router.post("/requestRestartPassword", async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res
+            .status(400)
+            .send({ status: "error", error: "Incomplete values" });
+    }
+
+    try {
+        const user = await UsersManagers.getUser(email);
+
+        if (!user) {
+            return res.status(404).send({
+                status: "error",
+                message: "There is no user with such email",
+            });
+        }
+
+        // Este token va a durar 1 hora
+        let token = jwt.sign({ email }, config.jwt_password_request, {
+            expiresIn: "1h",
+        });
+
+        let mail = new Mail();
+
+        await mail.send(
+            user,
+            "Password reset",
+            `
+            <div style='color: blue'>
+                <h1> Restaura tu email haciendo click en el siguiente link </h1>
+            </div>
+            <a href="http://localhost:8080/resetPassword?token=${token}">Clik Aqui</a>
+            `
+        );
+
+        return res.send({ status: "success", message: "Email sent" });
+    } catch (error) {
+        return res.status(404).send({ status: "error", error: error.message });
     }
 });
 

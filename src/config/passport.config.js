@@ -91,6 +91,23 @@ export const intializePassport = () => {
         )
     );
 
+    passport.use(
+        "jwtRequestPassword", // Utilizada cuando queremos recuperar la contrasenia
+        new JWTStrategy(
+            {
+                jwtFromRequest: ExtracJWT.fromExtractors([cookieExtractor]),
+                secretOrKey: config.jwt_password_request,
+            },
+            async (jwtPayload, done) => {
+                try {
+                    return done(null, jwtPayload);
+                } catch (e) {
+                    return done(e);
+                }
+            }
+        )
+    );
+
     passport.serializeUser((user, done) => {
         done(null, user._id);
     });

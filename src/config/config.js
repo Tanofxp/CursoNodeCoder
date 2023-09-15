@@ -13,4 +13,5 @@ export default {
     ENVIRONMENT: process.env.ENVIRONMENT,
     nodemailUser: process.env.NODEMAIL_USER,
     nodemailPass: process.env.NODEMAIL_PASS,
+    jwt_password_request: process.env.JWT_PASSWORD_REQUEST,
 };

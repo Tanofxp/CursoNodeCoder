@@ -1,39 +1,37 @@
-const form = document.getElementById("restartPasswordForm");
+const form = document.getElementById("requestRestartPasswordForm");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const obj = {};
     data.forEach((value, key) => (obj[key] = value));
-    fetch("/api/sessions/restartPassword", {
+    fetch("/api/sessions/requestRestartPassword", {
         method: "POST",
         body: JSON.stringify(obj),
         headers: {
             "Content-Type": "application/json",
         },
-    })
-        .then((result) => result.json())
-        .then((json) => {
-            console.log(json);
-            if (json.status === "success") {
-                Swal.fire({
-                    position: "Center",
-                    icon: "success",
-                    title: "Contraseña",
-                    text: `${json.message}`,
-                    showConfirmButton: false,
-                    timer: 2000,
-                });
-                window.location.replace("/");
-            } else {
-                Swal.fire({
-                    position: "Center",
-                    icon: "error",
-                    title: "Error al cambiar la contraseña",
-                    text: `${json.message}`,
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            }
-        });
+    }).then((result) => {
+        if (result.status === 200) {
+            Swal.fire({
+                icon: "success",
+                title: "Email for restoring your password has been sent",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: `There was an error`,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        }
+    });
 });
