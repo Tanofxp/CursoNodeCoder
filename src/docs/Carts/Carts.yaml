@@ -1,0 +1,6 @@
+paths:
+    /api/cart/:
+        get:
+            summary: obtener todos los carritos
+            tags:
+                - Cart

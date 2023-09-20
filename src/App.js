@@ -16,12 +16,14 @@ import { intializePassport } from "./config/passport.config.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import config from "./config/config.js";
-import routerLogger from './routes/logger.router.js';
-import { errorMiddleware } from './middleware/error.middleware.js';
-import { addLogger } from './config/logger.config.js';
+import routerLogger from "./routes/logger.router.js";
+import { errorMiddleware } from "./middleware/error.middleware.js";
+import { addLogger } from "./config/logger.config.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 const app = express();
-app.use(addLogger)
+app.use(addLogger);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,8 +52,8 @@ app.use("/api/cart", routerCart);
 app.use("/api/products/", routerProduct);
 app.use("/api/sessions", sessionRouter);
 app.use("/api/mockingproducts", mockingproducts);
-app.use('/logger/', routerLogger)
-app.use(errorMiddleware)
+app.use("/logger/", routerLogger);
+app.use(errorMiddleware);
 
 export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();
@@ -59,6 +61,22 @@ export const CartsManager = new CartManager();
 const expressServer = app.listen(config.port, () =>
     console.log(`!Servidor arriba en el puerto ${config.port}!`)
 );
+
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "documentacion clase 39",
+            description:
+                "esta es la documentacion de la clase 39, proyecto curso_node_coder",
+        },
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+console.log(specs);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 const socketServer = new Server(expressServer);
 
