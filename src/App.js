@@ -75,7 +75,7 @@ const swaggerOptions = {
 };
 
 const specs = swaggerJSDoc(swaggerOptions);
-console.log(specs);
+
 app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 const socketServer = new Server(expressServer);

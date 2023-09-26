@@ -9,19 +9,18 @@ const managerPurchase = new ManagerPurchase();
 
 router.get("/", async (req, res) => {
     const carts = await managerCarts.getCart();
-    res.send(carts);
+    res.send({ status: "success", payload: carts });
 });
 
 router.get("/:id", async (req, res, next) => {
     try {
         const id = req.params.id;
         const cart = await managerCarts.getCartById(id);
-        req.logger.debug(cart)
+        req.logger.debug(cart);
         res.send(cart);
     } catch (error) {
-        return next(error)
+        return next(error);
     }
-
 });
 
 router.post("/", async (req, res) => {
@@ -52,10 +51,8 @@ router.post(
             await managerCarts.addToCart(cartId, productId, quantity);
             res.send({ status: "success" });
         } catch (error) {
-            return next(error)
+            return next(error);
         }
-
-
     }
 );
 
@@ -68,10 +65,9 @@ router.delete("/:cid/product/:pid", async (req, res, next) => {
 
         res.send({ status: "success" });
     } catch (error) {
-        req.logger.error(error)
-        return next(error)
+        req.logger.error(error);
+        return next(error);
     }
-
 });
 
 router.delete("/:cid", async (req, res, next) => {
@@ -80,10 +76,9 @@ router.delete("/:cid", async (req, res, next) => {
         await managerCarts.deleteAllProductsFromCart(cartId);
         res.send({ status: "success" });
     } catch (error) {
-        req.logger.error(error)
-        return next(error)
+        req.logger.error(error);
+        return next(error);
     }
-
 });
 
 router.put(
@@ -98,10 +93,9 @@ router.put(
             await managerCarts.updateCartQuantity(cartId, prodcutId, quantity);
             res.send({ status: "success" });
         } catch (error) {
-            req.logger.error(error)
-            return next(error)
+            req.logger.error(error);
+            return next(error);
         }
-
     }
 );
 router.put("/:cid", async (req, res, next) => {
@@ -111,10 +105,9 @@ router.put("/:cid", async (req, res, next) => {
         await managerCarts.updateCartProducts(cartId, data);
         res.send({ status: "success" });
     } catch (error) {
-        req.logger.error(error)
-        return next(error)
+        req.logger.error(error);
+        return next(error);
     }
-
 });
 
 export default router;
