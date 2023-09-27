@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
         filtroVal
     );
 
-    res.send({ product });
+    res.send({ status: "success", product });
 });
 
 router.get("/:id", async (req, res) => {
@@ -42,10 +42,9 @@ router.post(
                 socketServer.emit("newProduct", product);
                 res.send(product);
             } catch (error) {
-                return next(error)
+                return next(error);
             }
         }
-
     }
 );
 router.put("/:id", async (req, res) => {
@@ -55,14 +54,15 @@ router.put("/:id", async (req, res) => {
             req.body
         );
         if (product.matchedCount > 0) {
-            const newProduct = await ProductsManager.getProductById(req.params.id);
+            const newProduct = await ProductsManager.getProductById(
+                req.params.id
+            );
             socketServer.emit("updateProduct", newProduct);
         }
         res.send(product);
     } else {
-        res.send({ error: "acceso denegado" })
+        res.send({ error: "acceso denegado" });
     }
-
 });
 
 router.delete(
@@ -74,9 +74,8 @@ router.delete(
             const product = await ProductsManager.deleteProduct(req.params.id);
             socketServer.emit("deleteProduct", req.params.id);
             res.send(product);
-        }
-        else {
-            res.send({ error: "acceso denegado" })
+        } else {
+            res.send({ error: "acceso denegado" });
         }
     }
 );

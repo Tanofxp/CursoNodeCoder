@@ -60,11 +60,11 @@ export const intializePassport = () => {
                     const user = await UsersManagers.getUser(username);
                     if (!user) {
                         console.log("Usuario no encontrado");
-                        return done(null, false);
+                        return done(null, 1);
                     }
                     if (!validatePassword(user, password)) {
                         console.log("Contraseña Incorrecta");
-                        return done(null, false);
+                        return done(null, 2);
                     }
                     return done(null, user);
                 } catch (error) {

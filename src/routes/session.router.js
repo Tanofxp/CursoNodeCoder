@@ -76,10 +76,19 @@ router.post(
         failureRedirect: "/faillogin",
     }),
     async (req, res) => {
-        if (!req.user)
-            return res
-                .status(400)
-                .send({ status: "error", message: "Invalid credentials" });
+        console.log(req.user);
+        if (req.user === 1) {
+            return res.status(400).send({
+                status: "error",
+                message: "Usuario no encontrado",
+            });
+        }
+        if (req.user === 2) {
+            return res.status(400).send({
+                status: "error",
+                message: "Contraseña Incorrecta",
+            });
+        }
         req.session.user = {
             name: req.user.first_name + " " + req.user.last_name,
             email: req.user.email,
