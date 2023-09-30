@@ -47,10 +47,10 @@ router.post(
             const cartId = req.params.cid;
             const productId = req.params.pid;
             const quantity = req.params.q;
-
             await managerCarts.addToCart(cartId, productId, quantity);
             res.send({ status: "success" });
         } catch (error) {
+            req.logger.error(error);
             return next(error);
         }
     }

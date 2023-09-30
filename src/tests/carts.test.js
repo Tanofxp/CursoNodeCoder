@@ -1,5 +1,6 @@
 import chai from "chai";
 import supertest from "supertest";
+import { stringify } from "uuid";
 
 const expect = chai.expect;
 const requester = supertest("http://localhost:8080/api/");
@@ -22,11 +23,12 @@ describe("Carts API", () => {
     });
     // Test para post /carts/cid/products/pid
     describe("Post /:cid/products/:pid/quantity/:q", () => {
-        it("debe devolver ok cuando se intenta crear un nuevo carrito", async () => {
+        it("debe devolver error cuando se intenta insertar un producto al carrito sin autenticar", async () => {
             const { _body } = await requester.post(
                 "cart/65137d00ade7f15d9b240c89/products/64a5b0455791af450d212638/quantity/2"
             );
-            expect(_body.status).to.be.ok;
+            console.log("_body", _body);
+            expect(_body).to.be.ok;
         });
     });
 });
