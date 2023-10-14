@@ -34,14 +34,14 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 intializePassport();
 app.use(
-    session({
-        store: new MongoStore({
-            mongoUrl: config.mongoUrl,
-        }),
-        secret: config.mongoSecret,
-        resave: true,
-        saveUninitialized: false,
-    })
+  session({
+    store: new MongoStore({
+      mongoUrl: config.mongoUrl,
+    }),
+    secret: config.mongoSecret,
+    resave: true,
+    saveUninitialized: false,
+  })
 );
 
 app.use(cookieParser());
@@ -59,19 +59,19 @@ export const ProductsManager = new ProductManager();
 export const CartsManager = new CartManager();
 
 const expressServer = app.listen(config.port, () =>
-    console.log(`!Servidor arriba en el puerto ${config.port}!`)
+  console.log(`!Servidor arriba en el puerto ${config.port}!`)
 );
 
 const swaggerOptions = {
-    definition: {
-        openapi: "3.0.1",
-        info: {
-            title: "documentacion clase 39",
-            description:
-                "esta es la documentacion de la clase 39, proyecto curso_node_coder",
-        },
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "documentacion clase 39",
+      description:
+        "esta es la documentacion de la clase 39, proyecto curso_node_coder",
     },
-    apis: [`${__dirname}/docs/**/*.yaml`],
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
 };
 
 const specs = swaggerJSDoc(swaggerOptions);
@@ -85,21 +85,21 @@ const products = await ProductsManager.getProductsInStock();
 const mensajes = [];
 
 socketServer.on("connection", (socket) => {
-    socketServer.emit("initProduct", products);
-    socket.on("message", (data) => {
-        console.log(data);
-    });
+  socketServer.emit("initProduct", products);
+  socket.on("message", (data) => {
+    console.log(data);
+  });
 
-    socket.on("message", (data) => {
-        console.log("esto son los mensajes", data);
-        mensajes.push(data);
-        socketServer.emit("imprimir", mensajes);
-        messagesModel.create(data);
-    });
+  socket.on("message", (data) => {
+    console.log("esto son los mensajes", data);
+    mensajes.push(data);
+    socketServer.emit("imprimir", mensajes);
+    messagesModel.create(data);
+  });
 
-    socket.on("authenticatedUser", (data) => {
-        socket.broadcast.emit("newUserAlert", data);
-    });
+  socket.on("authenticatedUser", (data) => {
+    socket.broadcast.emit("newUserAlert", data);
+  });
 });
 
 export default socketServer;
